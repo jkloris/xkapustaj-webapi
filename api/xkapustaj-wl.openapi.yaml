@@ -1,0 +1,341 @@
+openapi: 3.0.0
+servers:
+  - description: Cluster Endpoint
+    url: /api
+info:
+  description: Hospital Employee List management for Web-In-Cloud system
+  version: "1.0.0"
+  title: Waiting List Api
+  contact:
+    email: kapusta.jergus@gmail.com
+  license:
+    name: CC BY 4.0
+    url: "https://creativecommons.org/licenses/by/4.0/"
+tags:
+- name: jka-employee-list
+  description: Hospital Employee List API
+- name: jka-employee
+  description: Hospital Employee API
+- name: jka-timesheet
+  description: Hospital timesheet API
+- name: jka-timesheets
+  description: Hospital Employee timesheet List API 
+paths:
+  "/employee-list/{ambulanceId}/entries":
+    get:
+      tags:
+        - jka-employee-list
+      summary: Provides the ambulance waiting list
+      operationId: getEmployeeListEntries
+      description: By using ambulanceId you get list of employees in hospital
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: value of the waiting list entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EmployeeListEntry"
+              examples:
+                response:
+                  $ref: "#/components/examples/EmployeeListEntriesExample"
+        "404":
+          description: Ambulance with such ID does not exist
+  "/employee-list/{ambulanceId}/entries/{employeeId}":
+    get:
+      tags:
+        - jka-employee
+      summary: Provides the employee
+      operationId: getEmployee
+      description: By using ambulanceId and employeeId you get employee 
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: employeeId
+          description: pass the id of the particular employee
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: value of the employee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeListEntry"
+              examples:
+                response:
+                  $ref: "#/components/examples/EmployeeListEntryExample"
+        "404":
+          description: Ambulance with such ID does not exist
+  "/timesheet/{ambulanceId}/{timesheetId}":
+    put:
+      tags:
+        - jka-timesheet
+      summary: Updates specific entry
+      operationId: updateEmployeeTimesheet
+      description: Use this method to update content of timesheet.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: timesheetId
+          description: pass the id of the particular timesheet
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Timesheet"
+            examples:
+              request:
+                $ref: "#/components/examples/TimesheetExample"
+        description: Timesheey entry to update
+        required: true
+      responses:
+        "200":
+          description: >-
+            value of the timesheet with re-computed estimated time of
+            ambulance entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Timesheet"
+              examples:
+                response:
+                  $ref: "#/components/examples/TimesheetExample"
+        "403":
+          description: >-
+            Value of the entryID and the data id is mismatching. Details are
+            provided in the response body.
+        "404":
+          description: Ambulance or Entry with such ID does not exists
+    delete:
+      tags:
+        - jka-timesheet
+      summary: Deletes specific timesheet
+      operationId: deleteTimesheetEntry
+      description: Use this method to delete the specific entry from timesheet.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: timesheetId
+          description: pass the id of the particular entry 
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Item deleted
+        "404":
+          description: Ambulance or Entry with such ID does not exists
+    
+  "/timesheet/{ambulanceId}/employee/{employeeId}":
+    get:
+      tags:
+        - jka-timesheets
+      summary: Provides the timesheet
+      operationId: getEmployeeTimesheet
+      description: By using ambulanceId you get timesheet of employees in hospital
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: employeeId
+          description: pass the id of the particular employee
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: value of the waiting list entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Timesheet"
+              examples:
+                response:
+                  $ref: "#/components/examples/TimesheetsExample"
+        "404":
+          description: Ambulance with such ID does not exist
+    post:
+      tags:
+        - jka-timesheet
+      summary: Adds a new timesheet entry
+      operationId: addNewTimesheetEntry
+      description: Use this method to add a new entry to the timesheet.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: employeeId
+          description: pass the id of the particular employee
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Timesheet" # Assuming Timesheet schema is used for request body
+            examples:
+              request:
+                $ref: "#/components/examples/TimesheetExample" # Example request body
+        description: Timesheet entry to add
+      responses:
+        "201":
+          description: New entry added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Timesheet" # Assuming Timesheet schema is used for response
+              examples:
+                response:
+                  $ref: "#/components/examples/TimesheetExample" # Example response body
+        "400":
+          description: Invalid request body
+        "409":
+          description: Entry with such ID already exists
+components:
+  schemas:
+    EmployeeListEntry:
+      type: object
+      required: [id, patientId, jobTitle, name]
+      properties:
+        id:
+          type: string
+          example: x321ab3
+          description: Unique id of the entry in this waiting list
+        name:
+          type: string
+          example: Jožko Púčik
+          description: Name of patient in waiting list
+        patientId:
+          type: string
+          example: 460527-jozef-pucik
+          description: Unique identifier of the patient known to Web-In-Cloud system
+        jobTitle:
+          type: string
+          example: "Doctor"
+          description: Name of the job position
+      example:
+        $ref: "#/components/examples/EmployeeListEntryExample"
+    Timesheet:
+      description: "Describes the schedule of hospital employee"
+      required: [id, date, hours, description, employeeId]
+      properties:
+        id: 
+          type: string
+          example: "12321"
+          description: Unique identifier of the timesheet
+        employeeId:
+          type: string
+          example: "x321ab3"
+          description: Unique identifier of the employee
+        hours:
+          type: integer
+          format: int32
+          example: 8
+          description: number of hours worked that day
+        description:
+          type: string
+          example: "Driving and ambulance"
+          description: description of the shift
+        date:
+          type: string
+          format: date-time
+          example: "2038-12-24T10:35:00Z"
+          description: day of the shift
+      example:
+        $ref: "#/components/examples/TimesheetExample"
+  examples:
+    EmployeeListEntryExample:
+      summary: employee Jožko Púčik
+      description: |
+        Entry represents a hospital employee
+      value:
+        id: x321ab3
+        name: Jožko Púčik
+        patientId: 460527-jozef-pucik
+        jobTitle: "Doctor"
+    TimesheetExample:
+      summary: Timesheet entries
+      description: list of working days
+      value:
+        id: "12321"
+        hours: 8
+        description: "Driving and ambulance"
+        date:  "2023-12-24T10:35:00Z"
+        employeeId: "x321ab3"
+    EmployeeListEntriesExample:
+      summary: List of employees
+      description: |
+        Example list of hospital employees
+      value:
+      - id: x321ab3
+        name: Jožko Púčik
+        patientId: 460527-jozef-pucik
+        jobTitle: "Doctor"
+      - id: a322ag9
+        name: Marek Medzny
+        patientId: 460527-marek-medzny
+        jobTitle: "Primar"
+    TimesheetsExample:
+      summary: Timesheet entries
+      description: list of working days
+      value:
+      - id: "12321"
+        hours: 8
+        description: "Driving and ambulance"
+        date:  "2023-12-24T10:35:00Z"
+        employeeId: "x321ab3"
+      - id: "12322"
+        hours: 5
+        description: "Driving and ambulance1"
+        date:  "2023-12-25T10:35:00Z"
+        employeeId: "x321ab3"
+      - id: "12323"
+        hours: 7
+        description: "Driving and ambulance2"
+        date:  "2023-12-26T10:35:00Z"
+        employeeId: "x321ab3"
+      - id: "12324"
+        hours: 11
+        description: "Doing an operation"
+        date:  "2023-12-26T11:35:00Z"
+        employeeId: "a322ag9"
