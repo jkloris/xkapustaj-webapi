@@ -6,6 +6,7 @@ import (
     "strings"
     "github.com/gin-gonic/gin"
     "github.com/jkloris/xkapustaj-webapi/api"
+    "github.com/jkloris/xkapustaj-webapi/internal/xkapustaj_wl"
 )
 
 func main() {
@@ -21,6 +22,7 @@ func main() {
     engine := gin.New()
     engine.Use(gin.Recovery())
     // request routings
+    xkapustaj_wl.AddRoutes(engine)
     engine.GET("/openapi", api.HandleOpenApi)
     engine.Run(":" + port)
 }
