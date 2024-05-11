@@ -1,0 +1,5 @@
+internal/xkapustaj_wl/api_*
+internal/xkapustaj_wl/model_*
+internal/xkapustaj_wl/routers.go
+build/
+deployments/

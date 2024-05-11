@@ -10,7 +10,7 @@ import (
  // Get /api/employee-list/:ambulanceId/entries
  // Provides the ambulance waiting list 
 func (this *implJkaEmployeeListAPI) GetEmployeeListEntries(ctx *gin.Context) {
-	updateAmbulanceFunc(ctx, func(c *gin.Context,  hospital *Hospital) (*Hospital, interface{}, int) {
+	updateHospitalFunc(ctx, func(c *gin.Context,  hospital *Hospital) (*Hospital, interface{}, int) {
         result := hospital.Employees
         if result == nil {
             result = []EmployeeListEntry{}

@@ -2,7 +2,7 @@ package xkapustaj_wl
 
 import (
   "net/http"
-
+  "slices"
   "github.com/gin-gonic/gin"
 )
 
@@ -19,7 +19,7 @@ func (this *implJkaEmployeeAPI) GetEmployee(ctx *gin.Context) {
             }, http.StatusBadRequest
         }
 
-        entryIndx := slices.IndexFunc(ambulance.Employees, func(empl Employees) bool {
+        entryIndx := slices.IndexFunc(hospital.Employees, func(empl EmployeeListEntry) bool {
             return entryId == empl.Id
         })
 
@@ -30,8 +30,8 @@ func (this *implJkaEmployeeAPI) GetEmployee(ctx *gin.Context) {
             }, http.StatusNotFound
         }
 
-        // return nil ambulance - no need to update it in db
-        return nil, ambulance.Employees[entryIndx], http.StatusOK
+        
+        return nil, hospital.Employees[entryIndx], http.StatusOK
     })
 }
 

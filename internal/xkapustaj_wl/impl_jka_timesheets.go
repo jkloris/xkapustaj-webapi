@@ -2,7 +2,7 @@ package xkapustaj_wl
 
 import (
 	"net/http"
-  
+	"slices"
 	"github.com/gin-gonic/gin"
   )
 
@@ -10,7 +10,7 @@ import (
 // Get /api/timesheet/:ambulanceId/employee/:employeeId
 // GetEmployeeTimesheet - Provides the timesheet
 func (this *implJkaTimesheetsAPI) GetEmployeeTimesheet(ctx *gin.Context) {
-	updateAmbulanceFunc(ctx, func(c *gin.Context,  hospital *Hospital) (*Hospital, interface{}, int) {
+	updateHospitalFunc(ctx, func(c *gin.Context,  hospital *Hospital) (*Hospital, interface{}, int) {
 		employeeId := ctx.Param("employeeId")
 		if employeeId == "" {
             return nil, gin.H{

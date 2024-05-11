@@ -11,7 +11,7 @@ import (
 
 //Post /api/timesheet/:ambulanceId/employee/:employeeId
 func (this *implJkaTimesheetAPI) AddNewTimesheetEntry(ctx *gin.Context) {
-	updateAmbulanceFunc(ctx, func(c *gin.Context, hospital *Hospital) (*Hospital,  interface{},  int){
+	updateHospitalFunc(ctx, func(c *gin.Context, hospital *Hospital) (*Hospital,  interface{},  int){
         var timesheet Timesheet
 
         if err := c.ShouldBindJSON(&timesheet); err != nil {
@@ -56,13 +56,13 @@ func (this *implJkaTimesheetAPI) AddNewTimesheetEntry(ctx *gin.Context) {
                 "message": "Failed to save entry",
             }, http.StatusInternalServerError
         }
-        return ambulance, hospital.Timesheets[entryIndx], http.StatusOK
+        return hospital, hospital.Timesheets[entryIndx], http.StatusOK
     })
 }
 
 // DeleteTimesheetEntry - Deletes specific timesheet "/timesheet/{ambulanceId}/{timesheetId}"
 func (this *implJkaTimesheetAPI) DeleteTimesheetEntry(ctx *gin.Context) {
-	updateAmbulanceFunc(ctx, func(c *gin.Context, hospital *Hospital) (*Hospital,  interface{},  int){
+	updateHospitalFunc(ctx, func(c *gin.Context, hospital *Hospital) (*Hospital,  interface{},  int){
 		entryId := ctx.Param("timesheetId")
 
 		if entryId == "" {
@@ -90,7 +90,7 @@ func (this *implJkaTimesheetAPI) DeleteTimesheetEntry(ctx *gin.Context) {
 
 // UpdateEmployeeTimesheet - Updates specific entry "/timesheet/{ambulanceId}/{timesheetId}"
 func (this *implJkaTimesheetAPI) UpdateEmployeeTimesheet(ctx *gin.Context) {
-	updateAmbulanceFunc(ctx, func(c *gin.Context, hospital *Hospital) (*Hospital,  interface{},  int){
+	updateHospitalFunc(ctx, func(c *gin.Context, hospital *Hospital) (*Hospital,  interface{},  int){
 		var timesheet Timesheet
 
         if err := c.ShouldBindJSON(&timesheet); err != nil {
@@ -120,18 +120,16 @@ func (this *implJkaTimesheetAPI) UpdateEmployeeTimesheet(ctx *gin.Context) {
 			}, http.StatusNotFound
 		}
 
-		if timesheet.Date != "" {
-			hospital.Timesheets[entryIndx].Date = timesheet.Date
-		}
-
+		
 		if timesheet.Description != "" {
 			hospital.Timesheets[entryIndx].Description = timesheet.Description
 		}
-
+		
 		if timesheet.Hours > 0 {
 			hospital.Timesheets[entryIndx].Hours = timesheet.Hours
 		}
-		return smarty, hospital.Timesheets[entryIndx], http.StatusOK
+		hospital.Timesheets[entryIndx].Date = timesheet.Date
+		return hospital, hospital.Timesheets[entryIndx], http.StatusOK
 	})
 }
 
