@@ -1,8 +1,10 @@
 internal/xkapustaj_wl/README.md
+internal/xkapustaj_wl/api_hospitals.go
 internal/xkapustaj_wl/api_jka_employee.go
 internal/xkapustaj_wl/api_jka_employee_list.go
 internal/xkapustaj_wl/api_jka_timesheet.go
 internal/xkapustaj_wl/api_jka_timesheets.go
 internal/xkapustaj_wl/model_employee_list_entry.go
+internal/xkapustaj_wl/model_hospital.go
 internal/xkapustaj_wl/model_timesheet.go
 internal/xkapustaj_wl/routers.go

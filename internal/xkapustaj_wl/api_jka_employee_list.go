@@ -21,6 +21,9 @@ type JkaEmployeeListAPI interface {
    // internal registration of api routes
    addRoutes(routerGroup *gin.RouterGroup)
 
+    // AddNewEmployee - Add  new employee
+   AddNewEmployee(ctx *gin.Context)
+
     // GetEmployeeListEntries - Provides the ambulance waiting list
    GetEmployeeListEntries(ctx *gin.Context)
 
@@ -36,10 +39,16 @@ func newJkaEmployeeListAPI() JkaEmployeeListAPI {
 }
 
 func (this *implJkaEmployeeListAPI) addRoutes(routerGroup *gin.RouterGroup) {
+  routerGroup.Handle( http.MethodPost, "/employee-list/:ambulanceId/entries", this.AddNewEmployee)
   routerGroup.Handle( http.MethodGet, "/employee-list/:ambulanceId/entries", this.GetEmployeeListEntries)
 }
 
 // Copy following section to separate file, uncomment, and implement accordingly
+// // AddNewEmployee - Add  new employee
+// func (this *implJkaEmployeeListAPI) AddNewEmployee(ctx *gin.Context) {
+//  	ctx.AbortWithStatus(http.StatusNotImplemented)
+// }
+//
 // // GetEmployeeListEntries - Provides the ambulance waiting list
 // func (this *implJkaEmployeeListAPI) GetEmployeeListEntries(ctx *gin.Context) {
 //  	ctx.AbortWithStatus(http.StatusNotImplemented)

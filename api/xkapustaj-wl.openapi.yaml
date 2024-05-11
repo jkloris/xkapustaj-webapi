@@ -20,6 +20,8 @@ tags:
   description: Hospital timesheet API
 - name: jka-timesheets
   description: Hospital Employee timesheet List API 
+- name: hospitals
+  description: Hospital details
 paths:
   "/employee-list/{ambulanceId}/entries":
     get:
@@ -49,6 +51,44 @@ paths:
                   $ref: "#/components/examples/EmployeeListEntriesExample"
         "404":
           description: Ambulance with such ID does not exist
+    post:
+      tags:
+        - jka-employee-list
+      summary: Add  new employee
+      operationId: addNewEmployee
+      description: Use this method to add new employee to the list
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular ambulance
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeListEntry"
+            examples:
+              request-sample:
+                $ref: "#/components/examples/EmployeeListEntryExample"
+        description: Hospital details to store
+        required: true
+      responses:
+        "200":
+          description: >-
+            Value of stored employee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeListEntry"
+              examples:
+                updated-response:
+                  $ref: "#/components/examples/EmployeeListEntryExample"
+        "400":
+          description: Missing mandatory properties of input object.
+        "409":
+          description: Entry with the specified id already exists
   "/employee-list/{ambulanceId}/entries/{employeeId}":
     get:
       tags:
@@ -231,6 +271,57 @@ paths:
           description: Invalid request body
         "409":
           description: Entry with such ID already exists
+  "/hospital":
+    post:
+      tags:
+        - hospitals
+      summary: Saves new hospital definition
+      operationId: createHospital
+      description: Use this method to initialize new hospital in the system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Hospital"
+            examples:
+              request-sample:
+                $ref: "#/components/examples/HospitalExample"
+        description: Hospital details to store
+        required: true
+      responses:
+        "200":
+          description: >-
+            Value of stored ambulance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hospital"
+              examples:
+                updated-response:
+                  $ref: "#/components/examples/HospitalExample"
+        "400":
+          description: Missing mandatory properties of input object.
+        "409":
+          description: Entry with the specified id already exists
+  "/hospital/{ambulanceId}":
+    delete:
+      tags:
+        - hospitals
+      summary: Deletes specific hospital
+      operationId: deleteHospital
+      description: Use this method to delete the specific hospital from the system.
+      parameters:
+        - in: path
+          name: ambulanceId
+          description: pass the id of the particular hospital
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Item deleted
+        "404":
+          description: Hospital with such ID does not exist
 components:
   schemas:
     EmployeeListEntry:
@@ -283,6 +374,31 @@ components:
           description: day of the shift
       example:
         $ref: "#/components/examples/TimesheetExample"
+    Hospital:
+      type: object
+      required: [ "id", "name", "address"]
+      properties:
+        id:
+          type: string
+          example: asw2dwq
+          description: Unique identifier of the hospital
+        name:
+          type: string
+          example: Nemocnica Limbach
+          description: Human readable display name of the ambulance
+        address:
+          type: string
+          example: "90091 Limbach, 12"
+        employees:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeListEntry'
+        timesheets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Timesheet'
+      example:
+        $ref: "#/components/examples/HospitalExample"
   examples:
     EmployeeListEntryExample:
       summary: employee Jožko Púčik
@@ -339,3 +455,40 @@ components:
         description: "Doing an operation"
         date:  "2023-12-26T11:35:00Z"
         employeeId: "a322ag9"
+    HospitalExample:
+      summary: Sample Hospital
+      description: |
+        Example of random Hospital
+      value:
+        id: hsp-limbach
+        name: Nemocnica Limbach
+        address: 90091 san Martin, 12
+        employees:
+          - id: x321ab3
+            name: Jožko Púčik
+            patientId: 460527-jozef-pucik
+            jobTitle: "Doctor"
+          - id: a322ag9
+            name: Marek Medzny
+            patientId: 460527-marek-medzny
+            jobTitle: "Primar"
+        timesheets:
+          - id: "12321"
+            hours: 8
+            description: "Driving and smarty"
+            date:  "2023-12-24T10:35:00Z"
+            employeeId: "x321ab3"
+          - id: "12322"
+            hours: 5
+            description: "Driving and smarty1"
+            date:  "2023-12-25T10:35:00Z"
+            employeeId: "x321ab3"
+          - id: "12323"
+            hours: 7
+            description: "Driving and smarty2"
+            date:  "2023-12-26T10:35:00Z"
+            employeeId: "x321ab3"
+          - id: "12324"
+            hours: 11
+            description: "Doing an operation"
+            date:  "2023-12-26T11:35:00Z"
