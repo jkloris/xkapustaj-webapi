@@ -19,19 +19,17 @@ func (this *implJkaTimesheetsAPI) GetEmployeeTimesheet(ctx *gin.Context) {
             }, http.StatusBadRequest
         }
 
-        entryIndx := slices.IndexFunc(hospital.Timesheets, func(t Timesheet) bool {
-            return employeeId == t.EmployeeId
-        })
+		filteredTimesheets := []Timesheet{}
+		for _, value := range hospital.Timesheets {
+			 if value.EmployeeId == employeeId {
+				 filteredTimesheets = append(filteredTimesheets, value)
+			 }
+		}
 
-        if entryIndx < 0 {
-            return nil, gin.H{
-                "status":  http.StatusNotFound,
-                "message": "Entry not found",
-            }, http.StatusNotFound
-        }
+    
 
         // return nil ambulance - no need to update it in db
-        return nil,hospital.Timesheets[entryIndx], http.StatusOK
+        return nil,filteredTimesheets, http.StatusOK
     })
 }
 
