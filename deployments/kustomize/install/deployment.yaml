@@ -62,9 +62,9 @@ spec:
           - name: webapi-port
             containerPort: 8086
           env:
-            - name: XKAPUSTAJ_API_PORT
-              value: production
             - name: XKAPUSTAJ_API_ENVIRONMENT
+              value: production
+            - name: XKAPUSTAJ_API_PORT
               value: "8086"
             - name: AMBULANCE_API_MONGODB_HOST
               value: mongodb
