@@ -7,7 +7,7 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/jkloris/xkapustaj-webapi/api"
     "github.com/jkloris/xkapustaj-webapi/internal/xkapustaj_wl"
-    "github.com/jkloris/xkapustaj-webapi/internal/db_service"
+    "github.com/jkloris/ambulance-webapi/internal/db_service"
     "context"
     "time"
     "github.com/gin-contrib/cors"
