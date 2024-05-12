@@ -49,7 +49,7 @@ LABEL org.opencontainers.image.description="WEBAPI for managing  timesheets for 
 
 # list all variables and their default values for clarity
 ENV XKAPUSTAJ_API_ENVIRONMENT=production
-ENV XKAPUSTAJ_API_PORT=8086
+ENV XKAPUSTAJ_API_PORT=8080
 ENV AMBULANCE_API_MONGODB_HOST=mongo
 ENV AMBULANCE_API_MONGODB_PORT=27017
 ENV AMBULANCE_API_MONGODB_DATABASE=xkapustaj-wl
@@ -62,5 +62,5 @@ COPY --from=build /app/xkapustaj-webapi-srv ./
 
 # Actual port may be changed during runtime
 # Default using for the simple case scenario
-EXPOSE 8086
+EXPOSE 8080
 ENTRYPOINT ["./xkapustaj-webapi-srv"]

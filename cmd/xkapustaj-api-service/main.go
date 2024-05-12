@@ -17,7 +17,7 @@ func main() {
     log.Printf("Server started")
     port := os.Getenv("XKAPUSTAJ_API_PORT")
     if port == "" {
-        port = "8086"
+        port = "8080"
     }
     environment := os.Getenv("XKAPUSTAJ_API_ENVIRONMENT")
     if !strings.EqualFold(environment, "production") { // case insensitive comparison

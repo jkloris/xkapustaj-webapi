@@ -26,7 +26,7 @@ spec:
             mountPath: /scripts
           env:
             - name: XKAPUSTAJ_API_PORT
-              value: "8086"
+              value: "8080"
             - name: AMBULANCE_API_MONGODB_HOST
               value: mongodb
             - name: AMBULANCE_API_MONGODB_PORT
@@ -60,12 +60,12 @@ spec:
           imagePullPolicy: Always
           ports:
           - name: webapi-port
-            containerPort: 8086
+            containerPort: 8080
           env:
             - name: XKAPUSTAJ_API_ENVIRONMENT
               value: production
             - name: XKAPUSTAJ_API_PORT
-              value: "8086"
+              value: "8080"
             - name: AMBULANCE_API_MONGODB_HOST
               value: mongodb
             - name: AMBULANCE_API_MONGODB_PORT
