@@ -48,8 +48,8 @@ LABEL org.opencontainers.image.title="Hospital Empleyee list WebAPI Service"
 LABEL org.opencontainers.image.description="WEBAPI for managing  timesheets for hospital's employees"
 
 # list all variables and their default values for clarity
-ENV XKAPUSTAJ_API_ENVIRONMENT=production
-ENV XKAPUSTAJ_API_PORT=8080
+ENV AMBULANCE_API_ENVIRONMENT=production
+ENV AMBULANCE_API_PORT =8080
 ENV AMBULANCE_API_MONGODB_HOST=mongo
 ENV AMBULANCE_API_MONGODB_PORT=27017
 ENV AMBULANCE_API_MONGODB_DATABASE=xkapustaj-wl

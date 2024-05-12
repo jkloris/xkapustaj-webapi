@@ -15,11 +15,11 @@ import (
 
 func main() {
     log.Printf("Server started")
-    port := os.Getenv("XKAPUSTAJ_API_PORT")
+    port := os.Getenv("AMBULANCE_API_PORT ")
     if port == "" {
         port = "8080"
     }
-    environment := os.Getenv("XKAPUSTAJ_API_ENVIRONMENT")
+    environment := os.Getenv("AMBULANCE_API_ENVIRONMENT")
     if !strings.EqualFold(environment, "production") { // case insensitive comparison
         gin.SetMode(gin.DebugMode)
     }
