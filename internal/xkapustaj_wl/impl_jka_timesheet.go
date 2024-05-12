@@ -29,20 +29,7 @@ func (this *implJkaTimesheetAPI) AddNewTimesheetEntry(ctx *gin.Context) {
             }, http.StatusBadRequest
         }
 
-        if timesheet.Id == "" || timesheet.Id == "@new" {
-            timesheet.Id = uuid.NewString()
-        }
-
-        conflictIndx := slices.IndexFunc( hospital.Timesheets, func(t Timesheet) bool {
-            return timesheet.Id == t.Id 
-        })
-
-        if conflictIndx >= 0 {
-            return nil, gin.H{
-                "status": http.StatusConflict,
-                "message": "Entry already exists",
-            }, http.StatusConflict
-        }
+        timesheet.Id = uuid.NewString()
 
 		hospital.Timesheets = append(hospital.Timesheets, timesheet)
 
