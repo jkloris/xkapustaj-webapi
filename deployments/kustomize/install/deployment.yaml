@@ -100,10 +100,10 @@ spec:
           imagePullPolicy: Always
           ports:
           - name: api-ui
-            containerPort: 8081
+            containerPort: 8087
           env:
             - name: PORT
-              value: "8081"
+              value: "8087"
             - name:   URL
               value: /openapi
             - name: BASE_URL
